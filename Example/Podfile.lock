@@ -1,0 +1,16 @@
+PODS:
+  - ATEVolumeView (0.1.0)
+
+DEPENDENCIES:
+  - ATEVolumeView (from `../`)
+
+EXTERNAL SOURCES:
+  ATEVolumeView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ATEVolumeView: 152bbd1c55839a4780fb1f764df9eb2074c06f22
+
+PODFILE CHECKSUM: db9b6908d7baba9e76830639ed0d05ae55b8ab56
+
+COCOAPODS: 1.5.3
