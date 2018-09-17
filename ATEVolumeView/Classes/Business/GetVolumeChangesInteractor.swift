@@ -47,11 +47,14 @@ public class GetVolumeChangesEmulator: GetVolumeChanges {
     private init() {}
     
     private weak var listener: GetVolumeChangesDelegate?
-    
+
+    private(set) public var volume: Float = 0.5
+
     /**
      Send the volume you want to emit in range [0, 1]
     */
     public func send(volume: Float) {
+        self.volume = volume
         listener?.onVolumeChange(volume: min(max(0, volume), 1))
     }
     

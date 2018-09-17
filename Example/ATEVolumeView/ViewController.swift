@@ -35,14 +35,12 @@ class ViewController: UIViewController {
     }
 
     @IBAction func onLess(button: UIButton) {
-        let audioSession = AVAudioSession.sharedInstance()
-        let volumeToSend = max(audioSession.outputVolume - 0.05, 0)
+        let volumeToSend = max(GetVolumeChangesEmulator.shared.volume - 0.05, 0)
         GetVolumeChangesEmulator.shared.send(volume: volumeToSend)
     }
     
     @IBAction func onMore(button: UIButton) {
-        let audioSession = AVAudioSession.sharedInstance()
-        let volumeToSend = max(audioSession.outputVolume + 0.05, 1)
+        let volumeToSend = min(GetVolumeChangesEmulator.shared.volume + 0.05, 1)
         GetVolumeChangesEmulator.shared.send(volume: volumeToSend)
     }
 }
