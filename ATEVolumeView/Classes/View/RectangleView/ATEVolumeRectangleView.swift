@@ -67,7 +67,11 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
     private func createVolumeView(inside parentView: UIView) {
         self.isHidden = true
         
-        let sliderView = SliderVolumeView(frame: .zero)
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 0, y: SliderVolumeView.lineWidth/2))
+        path.addLine(to: CGPoint(x: self.frame.width, y: SliderVolumeView.lineWidth/2))
+        
+        let sliderView = SliderVolumeView(bezierPath: path)
         sliderView.foregroundColor = configuration.foregroundColor
         sliderView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sliderView)

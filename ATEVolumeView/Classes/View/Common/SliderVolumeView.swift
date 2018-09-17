@@ -3,8 +3,11 @@ import UIKit
 
 class SliderVolumeView: UIView {
 
-    private static let lineWidth: CGFloat = 4
-
+    static let lineWidth: CGFloat = 4
+    
+    // Path that define points where volume stroke will pass
+    private var bezierPath: UIBezierPath
+    
     // Percent painted in range [0, 1]
     private var sliderLayer: CAShapeLayer!
 
@@ -18,16 +21,16 @@ class SliderVolumeView: UIView {
         }
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(bezierPath: UIBezierPath) {
+        self.bezierPath = bezierPath
+        super.init(frame: .zero)
         createLayers()
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        createLayers()
+        fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         createLayers()
@@ -38,17 +41,14 @@ class SliderVolumeView: UIView {
     */
     private func createLayers() {
         layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
-
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: 0, y: SliderVolumeView.lineWidth/2))
-        path.addLine(to: CGPoint(x: self.frame.width, y: SliderVolumeView.lineWidth/2))
-
+        
         let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
+        shapeLayer.path = bezierPath.cgPath
         shapeLayer.strokeColor = foregroundColor.cgColor
         shapeLayer.lineWidth = SliderVolumeView.lineWidth
         shapeLayer.lineCap = kCALineCapRound
         shapeLayer.strokeStart = 0.0
+        shapeLayer.fillColor = UIColor.clear.cgColor
         setStrokeWidth(value: currentValue)
 
         layer.addSublayer(shapeLayer)
