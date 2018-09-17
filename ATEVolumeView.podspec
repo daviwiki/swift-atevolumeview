@@ -14,6 +14,8 @@ This module implements a full customization for MPVolumenView control that you c
   s.source           = { :git => 'https://github.com/daviwiki/ATEVolumeView.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
+  # s.frameworks = 'MediaPlayer', 'UIKit'
   s.source_files = 'ATEVolumeView/Classes/**/*'
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.1' }
 
 end

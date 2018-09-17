@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="vXZ-lx-hvc">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="ATEVolumeView_Example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="ATEVolume" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -20,7 +20,46 @@
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bf7-Br-tCj">
+                                <rect key="frame" x="0.0" y="603" width="375" height="64"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ySO-r5-xz3">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JDg-iC-awn" userLabel="Button - Less">
+                                                <rect key="frame" x="0.0" y="0.0" width="187.5" height="64"/>
+                                                <state key="normal" title="Less"/>
+                                                <connections>
+                                                    <action selector="onLessWithButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="YKQ-Sf-VDG"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mhI-wm-U4q" userLabel="Button - More">
+                                                <rect key="frame" x="187.5" y="0.0" width="187.5" height="64"/>
+                                                <state key="normal" title="More"/>
+                                                <connections>
+                                                    <action selector="onMoreWithButton:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="EwN-QH-xI0"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="ySO-r5-xz3" firstAttribute="top" secondItem="bf7-Br-tCj" secondAttribute="top" id="1Mk-TZ-1ay"/>
+                                    <constraint firstAttribute="bottom" secondItem="ySO-r5-xz3" secondAttribute="bottom" id="5rI-a0-cs1"/>
+                                    <constraint firstItem="ySO-r5-xz3" firstAttribute="leading" secondItem="bf7-Br-tCj" secondAttribute="leading" id="Be3-WB-2wU"/>
+                                    <constraint firstAttribute="height" constant="64" id="XXg-6v-J46"/>
+                                    <constraint firstAttribute="trailing" secondItem="ySO-r5-xz3" secondAttribute="trailing" id="ZFr-gL-Iai"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="bf7-Br-tCj" secondAttribute="bottom" id="awy-QC-kdA"/>
+                            <constraint firstAttribute="trailing" secondItem="bf7-Br-tCj" secondAttribute="trailing" id="tE3-v5-47D"/>
+                            <constraint firstItem="bf7-Br-tCj" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="wLt-3e-Ue0"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
