@@ -25,8 +25,8 @@ class ViewController: UIViewController {
         player.play()
         
         // ATEVolumeView configuration
-        let configuration = ATEVolumeRectangleConfiguration(backgroundColor: .yellow,
-                                                            foregroundColor: .brown,
+        let configuration = ATEVolumeRectangleConfiguration(backgroundColor: .gray,
+                                                            foregroundColor: .purple,
                                                             timeDisplayedAfterVolumeChange: 2)
         let volumeView = ATEVolumeRectangleViewBuilder.create(configuration: configuration)
         volumeView.bind(inside: self.view)

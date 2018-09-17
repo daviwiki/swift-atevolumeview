@@ -9,6 +9,7 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
 
     private weak var systemVolumeView: MPVolumeView?
     private weak var sliderView: SliderVolumeView?
+    private var isFirstExecution: Bool = true
 
     // MARK: ATEVolumeView
 
@@ -18,17 +19,26 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
     
     public func showVolumeControl(volume: Float) {
         sliderView?.set(value: volume, animated: true)
+        
         guard isHidden else { return }
-        self.alpha = 0.0
+        self.alpha = 0.01
         self.isHidden = false
-        UIView.animate(withDuration: 0.15) { [unowned self] () -> Void in
+        
+        // This hack is implemented to avoid that, in the first execution,
+        // the strokEnd comes from 1 -> initial value (i don't know way, but
+        // i will try to investigate the reason) that provokes an strange UI.
+        // Try to remove the delay to see the problem
+        let delay = isFirstExecution ? 0.15 : 0.0
+        isFirstExecution = false
+            
+        UIView.animate(withDuration: 0.15, delay: delay, options: .curveEaseOut, animations: { [unowned self]  in
             self.alpha = 1.0
-        }
+        })
     }
 
     public func hideVolumeControl() {
         UIView.animate(withDuration: 0.15, animations: { [unowned self] in
-            self.alpha = 0.0
+            self.alpha = 0.01
         }, completion: { [unowned self] finished in
             self.isHidden = true
             self.alpha = 1.0
