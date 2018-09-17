@@ -13,6 +13,10 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
 
     // MARK: ATEVolumeView
 
+    public var view: UIView {
+        return self
+    }
+    
     public func set(volume: Float) {
         sliderView?.set(value: volume, animated: false)
     }
@@ -62,17 +66,6 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
     */
     private func createVolumeView(inside parentView: UIView) {
         self.isHidden = true
-        self.translatesAutoresizingMaskIntoConstraints = false
-        parentView.addSubview(self)
-        
-        if #available(iOS 11.0, *) {
-            topAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.topAnchor).isActive = true
-        } else {
-            topAnchor.constraint(equalTo: parentView.topAnchor).isActive = true
-        }
-        leftAnchor.constraint(equalTo: parentView.leftAnchor).isActive = true
-        rightAnchor.constraint(equalTo: parentView.rightAnchor).isActive = true
-        heightAnchor.constraint(equalToConstant: 12).isActive = true
         
         let sliderView = SliderVolumeView(frame: .zero)
         sliderView.foregroundColor = configuration.foregroundColor

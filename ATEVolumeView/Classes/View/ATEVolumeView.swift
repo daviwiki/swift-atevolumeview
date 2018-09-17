@@ -4,6 +4,11 @@ import Foundation
 public protocol ATEVolumeView: class {
 
     /**
+     Return the main view for the ATEVolumeView piece
+     */
+    var view: UIView { get }
+    
+    /**
      Bind the ATEVolumeView to the UIView given
      */
     func bind(inside parentView: UIView)
