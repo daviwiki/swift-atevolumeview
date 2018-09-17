@@ -5,18 +5,19 @@ import MediaPlayer
 class ATEVolumeRectangleView: UIView, ATEVolumeView {
 
     var presenter: ATEVolumeViewPresenter!
+    var configuration: ATEVolumeRectangleConfiguration!
+
     private weak var systemVolumeView: MPVolumeView?
-    private weak var sliderView: SliderView?
+    private weak var sliderView: SliderVolumeView?
+
+    // MARK: ATEVolumeView
 
     public func set(volume: Float) {
         sliderView?.set(value: volume, animated: false)
     }
     
     public func showVolumeControl(volume: Float) {
-        defer {
-            sliderView?.set(value: volume, animated: true)
-        }
-
+        sliderView?.set(value: volume, animated: true)
         guard isHidden else { return }
         self.alpha = 0.0
         self.isHidden = false
@@ -40,7 +41,7 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
      - Parameter parentView: parent view where ATEVolumeView will be displayed
     */
     func bind(inside parentView: UIView) {
-        self.backgroundColor = UIColor.gray
+        self.backgroundColor = configuration.backgroundColor
         addSystemVolumeView(inside: parentView)
         createVolumeView(inside: parentView)
         presenter.start()
@@ -63,7 +64,8 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
         rightAnchor.constraint(equalTo: parentView.rightAnchor).isActive = true
         heightAnchor.constraint(equalToConstant: 12).isActive = true
         
-        let sliderView = SliderView(frame: .zero)
+        let sliderView = SliderVolumeView(frame: .zero)
+        sliderView.foregroundColor = configuration.foregroundColor
         sliderView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sliderView)
         
@@ -94,90 +96,4 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
         systemVolumeView = volumeView
         #endif
     }
-
-}
-
-private class SliderView: UIView {
-
-    // Percent painted in range [0, 1]
-    private var sliderLayer: CAShapeLayer!
-    private var currentValue: CGFloat = 0.0
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        createLayers()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        createLayers()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        createLayers()
-    }
-
-    private func createLayers() {
-        layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
-
-        let path = UIBezierPath()
-        let lineHeight: CGFloat = 4
-        path.move(to: CGPoint(x: 0, y: lineHeight/2))
-        path.addLine(to: CGPoint(x: self.frame.width, y: lineHeight/2))
-
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.green.cgColor
-        shapeLayer.fillColor = UIColor.blue.cgColor
-        shapeLayer.lineWidth = lineHeight
-        shapeLayer.lineCap = kCALineCapRound
-        shapeLayer.strokeStart = 0.0
-        shapeLayer.strokeEnd = currentValue
-
-        layer.addSublayer(shapeLayer)
-        sliderLayer = shapeLayer
-    }
-
-    /**
-    Set value between [0, 1]
-    */
-    func set(value: Float, animated: Bool = false) {
-        let cgValue = min(max(0, CGFloat(value)), 1)
-        self.currentValue = cgValue
-        sliderLayer.strokeEnd = cgValue
-    }
-
-}
-
-public class ATEVolumeRectangleViewBuilder {
-    
-    /**
-     Create a new RectangleVolumeView
-     */
-    public static func create() -> ATEVolumeView {
-        let view = ATEVolumeRectangleView(frame: .zero)
-        let configuration = ATEVolumeViewPresenterDefault.Configuration(displayTimerDuration: 3)
-        
-        // Due to simulator not display the MPVolumeView we perform a volume control
-        // emulator to avoid the use into real devices. See example for more information
-        #if (arch(i386) || arch(x86_64))
-        let onVolume = GetVolumeChangesEmulator.shared
-        #else
-        let onVolume = GetVolumeChangesInteractor()
-        #endif
-        
-        let presenter = ATEVolumeViewPresenterDefault(
-            configuration: configuration,
-            onVolumeInteractor: onVolume,
-            onAlarmInteractor: GetAlarmInteractor(),
-            getVolume: GetVolumeInteractor())
-        
-        // Binding
-        presenter.view = view
-        view.presenter = presenter
-        
-        return view
-    }
-    
 }

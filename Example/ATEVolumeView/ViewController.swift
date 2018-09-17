@@ -23,17 +23,17 @@ class ViewController: UIViewController {
         self.view.sendSubview(toBack: playerController.view)
         playerController.didMove(toParentViewController: self)
         player.play()
-
-        let volumeView = ATEVolumeRectangleViewBuilder.create()
+        
+        // ATEVolumeView configuration
+        let configuration = ATEVolumeRectangleConfiguration(backgroundColor: .yellow,
+                                                            foregroundColor: .brown,
+                                                            timeDisplayedAfterVolumeChange: 2)
+        let volumeView = ATEVolumeRectangleViewBuilder.create(configuration: configuration)
         volumeView.bind(inside: self.view)
-
-        // Display future MPVolumeView
-//        let volumeView = MPVolumeView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
-//        volumeView.isHidden = false
-//        volumeView.alpha = 0.01
-//        view.addSubview(volumeView)
     }
 
+    // MARK: Controls for simulator
+    
     @IBAction func onLess(button: UIButton) {
         let volumeToSend = max(GetVolumeChangesEmulator.shared.volume - 0.05, 0)
         GetVolumeChangesEmulator.shared.send(volume: volumeToSend)

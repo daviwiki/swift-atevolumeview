@@ -8,18 +8,14 @@ public protocol ATEVolumeViewPresenter: class {
 
 public class ATEVolumeViewPresenterDefault: NSObject, ATEVolumeViewPresenter {
 
-    struct Configuration {
-        var displayTimerDuration: TimeInterval = 3 /* seconds */
-    }
-    
     weak var view: ATEVolumeView?
     
-    private var configuration: Configuration
+    private var configuration: ATEVolumeConfiguration
     private var onVolumeInteractor: GetVolumeChanges
     private var onAlarmInteractor: GetAlarm
     private var getVolume: GetVolume
     
-    init(configuration: Configuration, onVolumeInteractor: GetVolumeChanges,
+    init(configuration: ATEVolumeConfiguration, onVolumeInteractor: GetVolumeChanges,
          onAlarmInteractor: GetAlarm, getVolume: GetVolume) {
         self.configuration = configuration
         self.onVolumeInteractor = onVolumeInteractor
@@ -42,7 +38,7 @@ public class ATEVolumeViewPresenterDefault: NSObject, ATEVolumeViewPresenter {
 extension ATEVolumeViewPresenterDefault: GetVolumeChangesDelegate {
     func onVolumeChange(volume: Float) {
         view?.showVolumeControl(volume: volume)
-        onAlarmInteractor.execute(fireAt: configuration.displayTimerDuration) { [weak self] in
+        onAlarmInteractor.execute(fireAt: configuration.timeDisplayedAfterVolumeChange) { [weak self] in
             self?.view?.hideVolumeControl()
         }
     }

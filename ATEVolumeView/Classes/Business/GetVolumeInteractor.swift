@@ -14,3 +14,9 @@ class GetVolumeInteractor: GetVolume {
         return AVAudioSession.sharedInstance().outputVolume
     }
 }
+
+class GetVolumeEmulator: GetVolume {
+    func execute() -> Float {
+        return GetVolumeChangesEmulator.shared.volume
+    }
+}
