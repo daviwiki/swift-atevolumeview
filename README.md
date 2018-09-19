@@ -77,7 +77,7 @@ private func mountVolumeControl(into view: UIView) {
 
 ## Author
 
-daviwiki, david.martinez@innocv.com
+daviwiki, daviddv19@gmail.com
 
 ## License
 
