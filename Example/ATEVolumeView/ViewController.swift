@@ -15,23 +15,17 @@ class ViewController: UIViewController {
 
     private func mountVolumeControl() {
         // ATEVolumeView configuration
-        let configuration = ATEVolumeNotchConfiguration(foregroundColor: UIColor.white.withAlphaComponent(0.75),
-                                                        timeDisplayedAfterVolumeChange: 2)
-        let volumeView = ATEVolumeNotchViewBuilder.create(configuration: configuration)
+//        let configuration = ATEVolumeNotchConfiguration(foregroundColor: UIColor.white.withAlphaComponent(0.75),
+//                                                        timeDisplayedAfterVolumeChange: 2)
+//        let volumeView = ATEVolumeNotchViewBuilder.create(configuration: configuration)
 
-//        let configuration = ATEVolumeRectangleConfiguration(backgroundColor: .gray,
-//                                                            foregroundColor: .purple,
-//                                                            timeDisplayedAfterVolumeChange: 2)
-//        let volumeView = ATEVolumeRectangleViewBuilder.create(configuration: configuration)
-        
-        // Add to your view tree
-        volumeView.view.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(volumeView.view)
-        
-        volumeView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        volumeView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        volumeView.view.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        volumeView.view.heightAnchor.constraint(equalToConstant: 12).isActive = true
+        let configuration = ATEVolumeRectangleConfiguration(backgroundColor: .gray,
+                                                            foregroundColor: .purple,
+                                                            timeDisplayedAfterVolumeChange: 2)
+        let volumeView = ATEVolumeRectangleViewBuilder()
+            .set(configuration: configuration)
+            .set(parentView: self.view)
+            .build()
         
         volumeView.bind(inside: self.view)
     }
