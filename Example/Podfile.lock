@@ -1,5 +1,5 @@
 PODS:
-  - ATEVolumeView (0.1.0)
+  - ATEVolumeView (1.0.0)
 
 DEPENDENCIES:
   - ATEVolumeView (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ATEVolumeView: 263539b15c06468e1138059abdd0143a02cd0425
+  ATEVolumeView: d6e773f4a2a82cb18e2659976d5113bf14c270d4
 
 PODFILE CHECKSUM: c29ae9e369ddcb44fbc1f914408a09a29592e4f8
 
