@@ -3,18 +3,38 @@ import UIKit
 
 public class ATEVolumeNotchViewBuilder {
     
-    /**
-     Create a new RectangleVolumeView
-     */
-    public static func create() -> ATEVolumeView {
-        let configuration = ATEVolumeNotchConfiguration(
+    private var configuration: ATEVolumeNotchConfiguration
+    private var parentView: UIView?
+    
+    public init() {
+        configuration = ATEVolumeNotchConfiguration(
             foregroundColor: UIColor.purple,
             timeDisplayedAfterVolumeChange: 3
         )
-        return create(configuration: configuration)
+        parentView = nil
     }
     
-    public static func create(configuration: ATEVolumeNotchConfiguration) -> ATEVolumeView {
+    public func set(configuration: ATEVolumeNotchConfiguration) -> ATEVolumeNotchViewBuilder {
+        self.configuration = configuration
+        return self
+    }
+    
+    public func set(parentView: UIView) -> ATEVolumeNotchViewBuilder {
+        self.parentView = parentView
+        return self
+    }
+    
+    public func build() -> ATEVolumeView {
+        let view = getNotchVolumeView()
+        
+        if let parentView = self.parentView {
+            defaultAutolayoutLink(volumeView: view, intoParentView: parentView)
+        }
+        
+        return view
+    }
+    
+    private func getNotchVolumeView() -> ATEVolumeNotchView {
         let view = ATEVolumeNotchView(frame: .zero)
         
         // Due to simulator not display the MPVolumeView we perform a volume control
@@ -40,5 +60,20 @@ public class ATEVolumeNotchViewBuilder {
         
         return view
     }
-    
+
+    private func defaultAutolayoutLink(volumeView: ATEVolumeNotchView, intoParentView parentView: UIView) {
+        volumeView.view.translatesAutoresizingMaskIntoConstraints = false
+        parentView.addSubview(volumeView.view)
+        
+        volumeView.view.topAnchor.constraint(equalTo: parentView.topAnchor).isActive = true
+        if #available(iOS 11.0, *) {
+            volumeView.view.leftAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.leftAnchor).isActive = true
+            volumeView.view.rightAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.rightAnchor).isActive = true
+        } else {
+            volumeView.view.leftAnchor.constraint(equalTo: parentView.leftAnchor).isActive = true
+            volumeView.view.rightAnchor.constraint(equalTo: parentView.rightAnchor).isActive = true
+        }
+        
+        volumeView.view.heightAnchor.constraint(equalToConstant: 12).isActive = true
+    }
 }
