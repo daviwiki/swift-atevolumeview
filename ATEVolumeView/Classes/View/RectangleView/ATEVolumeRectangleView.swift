@@ -11,6 +11,8 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
     private weak var sliderView: SliderVolumeView?
     private var isFirstExecution: Bool = true
 
+    private static let margin: CGFloat = 16
+    
     // MARK: ATEVolumeView
 
     public var view: UIView {
@@ -18,11 +20,11 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
     }
     
     public func set(volume: Float) {
-        sliderView?.set(value: volume, animated: false)
+        sliderView?.setSliderPercent(value: volume)
     }
     
     public func showVolumeControl(volume: Float) {
-        sliderView?.set(value: volume, animated: true)
+        sliderView?.setSliderPercent(value: volume)
         
         guard isHidden else { return }
         self.alpha = 0.01
@@ -65,20 +67,16 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
     Mount all views and layers to display the volume control and anchor them to the view passed as parameter
     */
     private func createVolumeView(inside parentView: UIView) {
+        self.sliderView?.removeFromSuperview()
         self.isHidden = true
         
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: 0, y: SliderVolumeView.lineWidth/2))
-        path.addLine(to: CGPoint(x: self.frame.width, y: SliderVolumeView.lineWidth/2))
-        
-        let sliderView = SliderVolumeView(bezierPath: path)
+        let sliderView = SliderVolumeView(bezierPath: getBezierPath())
         sliderView.foregroundColor = configuration.foregroundColor
         sliderView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(sliderView)
         
-        let margin: CGFloat = 16
         sliderView.heightAnchor.constraint(equalToConstant: 4).isActive = true
-        sliderView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: -2*margin).isActive = true
+        sliderView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1, constant: -2*ATEVolumeRectangleView.margin).isActive = true
         sliderView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         sliderView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         sliderView.backgroundColor = UIColor.clear
@@ -86,6 +84,18 @@ class ATEVolumeRectangleView: UIView, ATEVolumeView {
         self.sliderView = sliderView
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        sliderView?.setSlider(bezierPath: getBezierPath())
+    }
+    
+    private func getBezierPath() -> UIBezierPath {
+        let bezierPath = UIBezierPath()
+        bezierPath.move(to: CGPoint(x: 0, y: SliderVolumeView.lineWidth/2))
+        bezierPath.addLine(to: CGPoint(x: self.frame.width - 2*ATEVolumeRectangleView.margin, y: SliderVolumeView.lineWidth/2))
+        return bezierPath
+    }
+    
     deinit {
         systemVolumeView?.removeFromSuperview()
     }

@@ -24,41 +24,44 @@ class SliderVolumeView: UIView {
     init(bezierPath: UIBezierPath) {
         self.bezierPath = bezierPath
         super.init(frame: .zero)
-        createLayers()
+        sliderLayer = getSliderShapeLayer()
+        layer.addSublayer(sliderLayer)
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.bezierPath = UIBezierPath()
+        super.init(coder: aDecoder)
+        sliderLayer = getSliderShapeLayer()
+        layer.addSublayer(sliderLayer)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        createLayers()
-    }
-
     /**
     Create the shape layers that will draw the volume bar
     */
-    private func createLayers() {
-        layer.sublayers?.forEach({ $0.removeFromSuperlayer() })
-        
+    private func getSliderShapeLayer() -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
-        shapeLayer.path = bezierPath.cgPath
         shapeLayer.strokeColor = foregroundColor.cgColor
         shapeLayer.lineWidth = SliderVolumeView.lineWidth
         shapeLayer.lineCap = kCALineCapRound
         shapeLayer.strokeStart = 0.0
         shapeLayer.fillColor = UIColor.clear.cgColor
-        setStrokeWidth(value: currentValue)
-
-        layer.addSublayer(shapeLayer)
-        sliderLayer = shapeLayer
+        return shapeLayer
     }
 
     /**
-    Set value between [0, 1]
+     Set the bezier path that will be assigned to the shape
+     */
+    func setSlider(bezierPath: UIBezierPath) {
+        self.bezierPath = bezierPath
+        sliderLayer.path = bezierPath.cgPath
+        setStrokeWidth(value: currentValue)
+    }
+    
+    /**
+     Set value between [0, 1] that represents percent of slider filled
+     - Parameter value: percent value in [0, 1]
     */
-    func set(value: Float, animated: Bool = false) {
+    func setSliderPercent(value: Float) {
         let cgValue: CGFloat = min(max(0, CGFloat(value)), 1)
         self.currentValue = cgValue
         setStrokeWidth(value: cgValue)

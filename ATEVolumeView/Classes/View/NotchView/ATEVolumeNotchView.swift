@@ -18,11 +18,11 @@ class ATEVolumeNotchView: UIView, ATEVolumeView {
     }
     
     public func set(volume: Float) {
-        sliderView?.set(value: volume, animated: false)
+        sliderView?.setSliderPercent(value: volume)
     }
     
     public func showVolumeControl(volume: Float) {
-        sliderView?.set(value: volume, animated: true)
+        sliderView?.setSliderPercent(value: volume)
         
         guard isHidden else { return }
         self.alpha = 0.01
@@ -78,8 +78,10 @@ class ATEVolumeNotchView: UIView, ATEVolumeView {
         self.addSubview(sliderView)
         
         sliderView.heightAnchor.constraint(equalToConstant: 4).isActive = true
+        
         sliderView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -10).isActive = true
         sliderView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        
         sliderView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         sliderView.backgroundColor = UIColor.clear
         
@@ -88,11 +90,18 @@ class ATEVolumeNotchView: UIView, ATEVolumeView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        redrawSlider()
+        sliderView?.setSlider(bezierPath: getBezierPath())
     }
     
     private func getBezierPath() -> UIBezierPath {
         let path = UIBezierPath()
+        
+        if UIScreen.main.bounds.width > UIScreen.main.bounds.height {
+            let path = UIBezierPath()
+            path.move(to: CGPoint(x: 0, y: SliderVolumeView.lineWidth/2))
+            path.addLine(to: CGPoint(x: self.frame.width, y: SliderVolumeView.lineWidth/2))
+            return path
+        }
         
         // Notch Left
         path.move(to: CGPoint(x: 0.758066174, y: 31.734375))
