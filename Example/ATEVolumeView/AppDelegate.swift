@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  ATEVolumeView
-//
-//  Created by daviwiki on 09/16/2018.
-//  Copyright (c) 2018 daviwiki. All rights reserved.
-//
 
 import UIKit
 
