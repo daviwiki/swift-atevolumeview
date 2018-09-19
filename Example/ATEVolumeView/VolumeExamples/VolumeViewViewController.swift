@@ -1,38 +1,22 @@
 
 import UIKit
 import AVKit
-import AVFoundation
-import MediaPlayer
 import ATEVolumeView
 
-class ViewController: UIViewController {
+class VolumeViewViewController: UIViewController {
 
+    @IBOutlet weak var emulatorControlsView: UIStackView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         mountDemoPlayer()
-        mountVolumeControl()
+        #if (arch(i386) || arch(x86_64))
+        emulatorControlsView.isHidden = false
+        #else
+        emulatorControlsView.isHidden = true
+        #endif
     }
 
-    private func mountVolumeControl() {
-        // ATEVolumeView configuration
-        let configuration = ATEVolumeNotchConfiguration(foregroundColor: UIColor.white.withAlphaComponent(0.75),
-                                                        timeDisplayedAfterVolumeChange: 2)
-        let volumeView = ATEVolumeNotchViewBuilder()
-                .set(configuration: configuration)
-                .set(parentView: self.view)
-                .build()
-
-//        let configuration = ATEVolumeRectangleConfiguration(backgroundColor: .gray,
-//                                                            foregroundColor: .purple,
-//                                                            timeDisplayedAfterVolumeChange: 2)
-//        let volumeView = ATEVolumeRectangleViewBuilder()
-//            .set(configuration: configuration)
-//            .set(parentView: self.view)
-//            .build()
-        
-        volumeView.bind(inside: self.view)
-    }
-    
     private func mountDemoPlayer() {
         let url = URL(string: "http://techslides.com/demos/sample-videos/small.mp4")!
         let player = AVPlayer(url: url)
@@ -50,6 +34,10 @@ class ViewController: UIViewController {
     
     // MARK: Controls for simulator
     
+    @IBAction func onDismiss(button: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func onLess(button: UIButton) {
         let volumeToSend = max(GetVolumeChangesEmulator.shared.volume - 0.05, 0)
         GetVolumeChangesEmulator.shared.send(volume: volumeToSend)
@@ -59,5 +47,5 @@ class ViewController: UIViewController {
         let volumeToSend = min(GetVolumeChangesEmulator.shared.volume + 0.05, 1)
         GetVolumeChangesEmulator.shared.send(volume: volumeToSend)
     }
+    
 }
-
